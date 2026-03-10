@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hsort"
-version = "3.0.0"
+version = "1.3.3"
 description = "A high-performance sorting and merging engine optimized for processing large-scale data files, with stable multi-key sorting support for fixed-length, variable-length, and CSV formats."
 readme = "README.md"
 
