@@ -452,9 +452,11 @@ hsortソート操作を実行します。
 
 ## ライセンス
 
-本プロジェクトは Apache 2.0 の下で公開されています。
+## ライセンス
 
-Copyright (C) 2015 by 株式会社GPO
+本プロジェクトは MIT License の下で公開されています。
+
+Copyright (c) 2015–2026 株式会社GPO
 
 ### MIT License
 
