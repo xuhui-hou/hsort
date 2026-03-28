@@ -1,22 +1,42 @@
-<h2>Payment Options</h2>
+## 🚀 Upgrade to HSORT Pro
 
-<p>You can purchase HSORT Pro via:</p>
+Unlock the full power of HSORT:
 
-<h3>1. Gumroad (Recommended)</h3>
-<p>
-👉 <a href="https://gpoi.gumroad.com/l/python-hsort">Buy on Gumroad</a><br>
+- ⚡ Unlimited file size processing
+- 🚀 Maximum performance (C extension fully enabled)
+- 🔑 Advanced multi-key sorting
+- 🔄 Free future updates
+
+👉 Perfect for developers handling large-scale data (GB+)
+
+---
+
+## 💰 Payment Options
+
+You can purchase HSORT Pro via:
+
+### 1. Gumroad (Recommended)
+
+👉 🔥 Buy HSORT Pro on Gumroad  
 Supports credit card and PayPal.
-</p>
 
-<h3>2. Alternative (Japan only)</h3>
+👉 <a href="https://gpoi.gumroad.com/l/python-hsort">Buy on Gumroad</a>
 
-<p>If you prefer PayPay or bank transfer, please contact:</p>
+Trusted by developers for high-performance file sorting.
 
-<p>📧 soft@gpo-i.com</p>
+✔ Works on Windows / Linux / macOS  
+✔ Designed for large datasets (millions of records)  
+✔ Simple CLI usage
 
-<p>We will provide payment details and send your license key after confirmation.</p>
+---
 
-<ul>
-<li>✔ PayPay</li>
-<li>✔ Bank transfer (Japan)</li>
-</ul>
+### 2. Alternative (Japan only)
+
+If you prefer PayPay or bank transfer, please contact:
+
+📧 Contact: soft@gpo-i.com
+
+We will provide payment details and send your license key after confirmation.
+
+✔ PayPay  
+✔ Bank transfer (Japan)
