@@ -1,6 +1,6 @@
 # HSORT
 
-**[English（README.md）](README.md)** | **[简体中文（README.zh.md）](README.zh.md)** — このファイルは日本語ドキュメントです。
+**[English（README.md）](README.md)** | **[简体中文（README.zh.md）](README.zh.md)** | **[繁體中文・台灣（README.zh-zw.md）](README.zh-zw.md)** — このファイルは日本語ドキュメントです。
 
 **超高速ソートマージ Python拡張ライブラリ**
 
@@ -574,6 +574,9 @@ Copyright (c) 2015–2026 株式会社GPO
 - **オープンソースではありません** — 法令または書面契約で明示的に認められる場合を除き、ソースコードの利用・再頒布・改変の一般的な権利は付与されません。
 - **無償利用枠** — 合計入力サイズなどの制限が含まれる場合があります（上記参照）。完全な商用権利は付与されません。
 - **有償ライセンス** — 発行者との契約に従い、全機能と許諾された利用が可能になります。
+
+👉 ライセンスの購入:
+https://softwave56.gumroad.com/l/python-hsort
 
 ライセンスに関するお問い合わせ: **soft@gpo-i.com**
 

@@ -1,6 +1,11 @@
 # HSORT
 
-**[日本語（README.ja.md）](README.ja.md)** | **[简体中文（README.zh.md）](README.zh.md)**
+## 🌐 Languages
+
+- 🇺🇸 English
+- 🇯🇵 [日本語](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md)
+- 🇨🇳 [简体中文](https://github.com/xuhui-hou/hsort/blob/main/README.zh.md)
+- 🇹🇼 [繁體中文（台灣）](https://github.com/xuhui-hou/hsort/blob/main/README.zh-zw.md)
 
 High-performance sort/merge **Python extension** backed by a C engine. Uses an internal memory pool for fast sorting of fixed-length, variable-length, and CSV files, plus merge of sorted inputs.
 
@@ -529,6 +534,9 @@ This project is **not open source**. The software is **proprietary**; see the **
 - **Not open source** — No general right to source, redistribution, or modification except as allowed by law or a written agreement.  
 - **Free tier** — May include limits (e.g. total input size as above). Does not grant full commercial rights.  
 - **Paid license** — Unlocks full features per your agreement with the publisher.  
+
+👉 **Buy License (Instant Key Delivery):**  
+https://your-website.com/hsort-license
 
 Licensing contact: **soft@gpo-i.com**
 
