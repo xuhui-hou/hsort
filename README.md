@@ -2,10 +2,12 @@
 
 ## 🌐 Languages
 
-- 🇺🇸 English
-- 🇯🇵 [日本語](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md)
-- 🇨🇳 [简体中文](https://github.com/xuhui-hou/hsort/blob/main/README.zh.md)
-- 🇹🇼 [繁體中文（台灣）](https://github.com/xuhui-hou/hsort/blob/main/README.zh-zw.md)
+| Language | README |
+| --- | --- |
+| English | *this file* (`README.md`) |
+| 日文 | [README.ja.md](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md) |
+| 简体中文 | [README.zh-CN.md](https://github.com/xuhui-hou/hsort/blob/main/README.zh-CN.md) |
+| 繁体中文 | [README.zh-TW.md](https://github.com/xuhui-hou/hsort/blob/main/README.zh-TW.md) |
 
 High-performance sort/merge **Python extension** backed by a C engine. Uses an internal memory pool for fast sorting of fixed-length, variable-length, and CSV files, plus merge of sorted inputs.
 

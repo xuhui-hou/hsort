@@ -1,6 +1,6 @@
 # HSORT
 
-**[English（README.md）](README.md)** | **[简体中文（README.zh.md）](README.zh.md)** | **[繁體中文・台灣（README.zh-zw.md）](README.zh-zw.md)** — このファイルは日本語ドキュメントです。
+**[English（README.md）](README.md)** | **[简体中文（README.zh-CN.md）](README.zh-CN.md)** | **[繁体中文（README.zh-TW.md）](README.zh-TW.md)** — このファイルは日本語ドキュメントです。
 
 **超高速ソートマージ Python拡張ライブラリ**
 
