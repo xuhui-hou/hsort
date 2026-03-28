@@ -4,7 +4,7 @@
 
 <h3>1. Gumroad (Recommended)</h3>
 <p>
-👉 <a href="https://你的gumroad链接">Buy on Gumroad</a><br>
+👉 <a href="https://gpoi.gumroad.com/l/python-hsort">Buy on Gumroad</a><br>
 Supports credit card and PayPal.
 </p>
 
