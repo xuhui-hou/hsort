@@ -1,16 +1,3 @@
-## 🚀 Upgrade to HSORT Pro
-
-Unlock the full power of HSORT:
-
-- ⚡ Unlimited file size processing
-- 🚀 Maximum performance (C extension fully enabled)
-- 🔑 Advanced multi-key sorting
-- 🔄 Free future updates
-
-👉 Perfect for developers handling large-scale data (GB+)
-
----
-
 ## 💰 Payment Options
 
 You can purchase HSORT Pro via:
