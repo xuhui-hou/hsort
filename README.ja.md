@@ -1,6 +1,6 @@
 # HSORT
 
-**[English（README.md）](README.md)** | **[简体中文（README.zh-CN.md）](README.zh-CN.md)** | **[繁体中文（README.zh-TW.md）](README.zh-TW.md)** — このファイルは日本語ドキュメントです。
+**[English（README.md）](README.md)** | **[简体中文（README.zh.md）](README.zh.md)** | **[繁體中文・台灣（README.zh-zw.md）](README.zh-zw.md)** — このファイルは日本語ドキュメントです。
 
 **超高速ソートマージ Python拡張ライブラリ**
 
@@ -534,7 +534,7 @@ hsortソート操作を実行します。
 
 ## 要件
 
-- Python 3.6 以上
+- Python 3.9 以上
 - サポートされているオペレーティングシステム: Windows, Linux, macOS
 - メモリ: 推奨は少なくとも16MBの利用可能メモリ（`-W`オプションで調整可能）
 
@@ -573,8 +573,8 @@ Copyright (c) 2015–2026 株式会社GPO
 - **無償利用枠** — 合計入力サイズなどの制限が含まれる場合があります（上記参照）。完全な商用権利は付与されません。
 - **有償ライセンス** — 発行者との契約に従い、全機能と許諾された利用が可能になります。
 
-👉 ライセンスの購入:
-https://softwave56.gumroad.com/l/python-hsort
+👉 **ライセンス購入（ライセンスキー即時お届け）：**  
+https://github.com/xuhui-hou/hsort/blob/main/Payment.md
 
 ライセンスに関するお問い合わせ: **soft@gpo-i.com**
 

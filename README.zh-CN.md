@@ -1,6 +1,6 @@
 # HSORT
 
-**[English（README.md）](README.md)** | **[日本語（README.ja.md）](README.ja.md)** | **[繁体中文（README.zh-TW.md）](README.zh-TW.md)** — 本文件为 **简体中文（中国大陆）** 说明。
+**[English（README.md）](README.md)** | **[日本語（README.ja.md）](README.ja.md)** | **[繁體中文／台灣（README.zh-zw.md）](README.zh-zw.md)**
 
 高性能排序/合并 **Python 扩展**，底层为 C 引擎。通过内部内存池快速排序定长、变长与 CSV 文件，并支持将已排序输入合并为单一输出流。
 
@@ -491,7 +491,7 @@ sort_csv_files("data/input", "data/output")
 
 ## 运行环境
 
-- Python **3.6+**  
+- Python **3.9+**  
 - Windows、Linux 或 macOS  
 - 建议 **≥ 16 MB** 可用内存（可用 `-W` 调节）  
 
@@ -530,8 +530,8 @@ Copyright (c) 2015–2026 株式会社GPO
 - **免费档** — 可能包含限制（例如上文总输入大小）。不授予完整商业权利。  
 - **付费许可** — 按与发行方的协议解锁全部功能与约定范围内的使用。  
 
-👉 购买许可：
-https://softwave56.gumroad.com/l/python-hsort
+👉 **购买许可（密钥即时交付）：**  
+https://github.com/xuhui-hou/hsort/blob/main/Payment.md
 
 许可咨询：**soft@gpo-i.com**
 

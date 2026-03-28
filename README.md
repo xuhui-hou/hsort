@@ -2,12 +2,10 @@
 
 ## 🌐 Languages
 
-| Language | README |
-| --- | --- |
-| English | *this file* (`README.md`) |
-| 日文 | [README.ja.md](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md) |
-| 简体中文 | [README.zh-CN.md](https://github.com/xuhui-hou/hsort/blob/main/README.zh-CN.md) |
-| 繁体中文 | [README.zh-TW.md](https://github.com/xuhui-hou/hsort/blob/main/README.zh-TW.md) |
+- 🇺🇸 English
+- 🇯🇵 [日本語](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md)
+- 🇨🇳 [简体中文](https://github.com/xuhui-hou/hsort/blob/main/README.zh.md)
+- 🇹🇼 [繁體中文（台灣）](https://github.com/xuhui-hou/hsort/blob/main/README.zh-zw.md)
 
 High-performance sort/merge **Python extension** backed by a C engine. Uses an internal memory pool for fast sorting of fixed-length, variable-length, and CSV files, plus merge of sorted inputs.
 
@@ -496,7 +494,7 @@ sort_csv_files("data/input", "data/output")
 
 ## Requirements
 
-- Python **3.6+**  
+- Python **3.9+**  
 - Windows, Linux, or macOS  
 - Suggest **≥ 16 MB** available RAM (tune with `-W`)  
 
@@ -536,7 +534,7 @@ This project is **not open source**. The software is **proprietary**; see the **
 - **Paid license** — Unlocks full features per your agreement with the publisher.  
 
 👉 **Buy License (Instant Key Delivery):**  
-https://your-website.com/hsort-license
+https://github.com/xuhui-hou/hsort/blob/main/Payment.md
 
 Licensing contact: **soft@gpo-i.com**
 

@@ -1,6 +1,6 @@
 # HSORT
 
-**[English（README.md）](README.md)** | **[日本語（README.ja.md）](README.ja.md)** | **[简体中文（README.zh-CN.md）](README.zh-CN.md)** — 本檔案為 **繁體中文（台灣）** 說明（`README.zh-TW.md`，用語以台灣為準）。
+**[English（README.md）](README.md)** | **[日本語（README.ja.md）](README.ja.md)** | **[简体中文（README.zh.md）](README.zh.md)** — 本檔案為 **台灣繁體中文** 說明（用語以台灣為準）。
 
 高效能排序／合併 **Python C 延伸模組**，底層為 C 引擎。透過內部記憶體池快速排序定長、變長與 CSV 檔案，並支援將已排序輸入合併為單一輸出流。
 
@@ -491,7 +491,7 @@ sort_csv_files("data/input", "data/output")
 
 ## 執行環境
 
-- Python **3.6+**  
+- Python **3.9+**  
 - Windows、Linux 或 macOS  
 - 建議 **≥ 16 MB** 可用記憶體（可用 `-W` 調節）  
 
@@ -530,8 +530,8 @@ Copyright (c) 2015–2026 株式会社GPO
 - **免費檔** — 可能包含限制（例如上文總輸入大小）。不授予完整商業權利。  
 - **付費授權** — 依與發行方的合約解鎖全部功能與約定範圍內的使用。  
 
-👉 購買授權：
-https://softwave56.gumroad.com/l/python-hsort
+👉 **購買授權（授權金鑰即時交付）：**  
+https://github.com/xuhui-hou/hsort/blob/main/Payment.md
 
 授權諮詢：**soft@gpo-i.com**
 
