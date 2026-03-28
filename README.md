@@ -1,354 +1,408 @@
 # HSORT
 
-**超高速ソートマージ Python拡張ライブラリ**
+**[日本語（README.ja.md）](README.ja.md)** | **[简体中文（README.zh.md）](README.zh.md)**
 
-HSORTは、C言語で開発された高性能ソートエンジンをPython拡張ライブラリとして提供するパッケージです。自作メモリプールを使用して、超高速で固定長、可変長、CSVファイルのソート、マージ機能を提供します。
+High-performance sort/merge **Python extension** backed by a C engine. Uses an internal memory pool for fast sorting of fixed-length, variable-length, and CSV files, plus merge of sorted inputs.
 
-- **ソート機能**: ファイル内のレコードをデータ中の文字または数字をキーとして、昇順または降順に並べ替える機能
-- **マージ機能**: 複数のファイルのデータを一つのファイルに併合する機能
+- **Sort** — Order records by text or numeric keys, ascending or descending  
+- **Merge** — Combine multiple sorted files into one stream  
 
-大規模データファイルの処理に最適化された高性能ソート・マージエンジン。固定長、可変長、CSV形式に対応し、安定したマルチキーソートをサポートします。
+## Highlights
 
-## Python拡張ライブラリとしての特徴
+- Install with **pip** from PyPI  
+- **`hsort`** CLI and **`import hsort`** Python API  
+- **Windows, Linux, macOS**  
+- Unix-style **`-` / `--`** options  
 
-- ✅ **pipで簡単インストール**: PyPIからインストール可能
-- ✅ **コマンドラインインターフェース**: `hsort` コマンドとして使用可能
-- ✅ **Python API**: プログラム内から `import hsort` で使用可能
-- ✅ **クロスプラットフォーム**: Windows、Linux、macOSで動作
-- ✅ **標準的なCLI形式**: Unixスタイルの `-` オプションと `--` 長オプションをサポート
+## Sort modes
 
-## ソート方式
+**In-memory sort** — When enough memory is available for the dataset, sorting avoids temp files.
 
-ソート機能の処理には、入力ファイルの総サイズ及び指定されたメモリのサイズにより次の二つの方式があります。
+**External sort** — When memory is insufficient, data is split, sorted in chunks, and merged using temporary files.
 
-### メモリ上ソート
-入力データ量に対して十分なメモリサイズを指定した場合、一時ファイルを使用しないでソートする処理のことです。
+If **`-W`** is omitted, the engine estimates memory from input size; if allocation fails, it falls back to external sort.
 
-### 一時ファイルでソート
-入力データ量に対して最大メモリサイズが不足した場合、一時ファイルを使用して、入力データを分割しながらソートする処理のことです。
+## Features (summary)
 
-**注意**: 使用可能なメモリサイズが未指定の場合、入力ファイルの総サイズを基づいて「メモリ上ソート」の必要なメモリサイズを自動計算してメモリを割り当ててみます。メモリは確保できなければ、「一時ファイルでソート」します。
+- Configurable memory budget (`-W`) with automatic sizing when omitted  
+- Fixed-length, variable-length (text/binary), and **CSV**  
+- Stdin/stdout; logs on stderr  
+- Multi-key sort; stable sort (`-S`); unique output (`-U`)  
+- Invalid records can be skipped or written to an error file (`-E`)  
+- ASCII vs numeric key modes; large files supported  
+- Cross-platform  
 
-## 機能
-
-- ✅ ソフト起動の際にメモリプール用メモリを確保し、高速にメモリを割り当て、メモリ断片化を最小化すること
-- ✅ 最大メモリサイズが指定できること、未指定の場合、自動計算すること
-- ✅ 固定長、可変長のテキスト、バイナリファイルをサポートすること
-- ✅ CSVファイルをサポートすること（文字列の記述には、ダブルクォーテーション（"）で囲むことは可能）
-- ✅ 標準入力、標準出力をサポートすること
-- ✅ ログ情報を標準エラーに出力すること
-- ✅ 複数キー又は全レコードの昇順、降順が指定できること
-- ✅ 等しいソートキーの最初レコードのみ出力すること（ユニック出力機能）
-- ✅ レコード順序保持機能（安定ソート）
-- ✅ 不正レコード（最大キー不足）をスキップ、又はエラーファイルに出力する
-- ✅ ASCII順、数字順でソートすること
-- ✅ 2G以上ファイルもサポートすること
-- ✅ クロスプラットフォーム対応（Windows/Unix/Linux/macOS）
-
-## インストール
-
-### PyPIからインストール
+## Installation
 
 ```bash
 pip install hsort
 ```
 
-### TestPyPIからインストール（開発版）
+Test PyPI (when applicable):
 
 ```bash
 pip install --index-url https://test.pypi.org/simple/ hsort
 ```
 
-### インストールの確認
-
-インストール後、以下のコマンドで動作確認できます：
+Check install:
 
 ```bash
-# バージョン確認
 hsort --version
-
-# ヘルプ表示
 hsort --help
 ```
 
-## クイックスタート
+## Quick start
 
-### CSVファイルのソート
+**CSV (header row, sort column 1)**
 
 ```bash
-# 第1列でソート（ヘッダー付き）
 hsort -C -H -K1 -O output.csv input.csv
 ```
 
-### 固定長ファイルのソート
+**Fixed-length (64-byte records, key bytes 0–19)**
 
 ```bash
-# 固定長ファイルのソート（レコード長64バイト）
 hsort -L64 -K0,20 -O output.dat input.dat
 ```
 
-### 可変長ファイルのソート
+**Variable-length**
 
 ```bash
-# 可変長ファイルのソート
 hsort -K0,10 -O output.dat input.dat
 ```
 
-## 基本的な使用方法
+## CLI usage
 
-```bash
-hsort [オプション] [入力ファイル...]
+```text
+hsort [options] [input files...]
 ```
 
-### パラメータ一覧
+Options are **case-sensitive** (`-C` ≠ `-c`). Short and long forms are equivalent (`-C` / `--csv`).
 
-| 短オプション | 長オプション | 意味 |
+For the authoritative option list, run:
+
+```bash
+hsort --help
+```
+
+### Option reference
+
+| Short | Long | Description |
 | --- | --- | --- |
-| `-h`, `--help` | `--help` | ヘルプを表示します |
-| `-V` | `--version` | バージョン情報、ライセンス情報を表示します |
-| `-C` | `--csv` | 入力データは CSV ファイルです。 |
-| `-H` | `--header` | CSVファイルの先頭行をヘッダとして扱います |
-| `-S` | `--stable` | 安定ソートフラグを指定します。 |
-| `-U` | `--unique` | ユニーク出力フラグを指定します。 |
-| `-L BYTES` | `--record-length BYTES` | 固定長ファイルを指定します。<br>入力ファイル編成ごとのレコード長<br>※ファイルのレコード長を「1 ～ 640KB」バイトの範囲で指定します。 |
-| `-K KEY_SPEC` | `--key KEY_SPEC` | ソートキーを指定します（複数指定可能）。<br><br>**固定長、可変長の場合**: `開始位置[,長さ][n][a\|d]`<br>- 開始位置：0から始まるバイト位置<br>- 長さ：キーの長さ（省略可）<br>- n：数字順でソート（未指定するとASCII順）<br>- a：昇順（省略可）、d：降順<br><br>**CSVの場合**: `キー位置[n][a\|d]`<br>- キー位置：1から始まる列番号<br>- n：数字順でソート（未指定するとASCII順）<br>- a：昇順（省略可）、d：降順 |
-| `-A` | `--all-asc` | 全レコード昇順フラグを指定します。<br>※-K と同時に指定すると、-K オプションを省略します。<br>※-R と同時に指定すると、後に指定されたオプションを省略します。 |
-| `-R` | `--all-desc` | 全レコード降順フラグを指定します。<br>※-K と同時に指定すると、-K オプションを省略します。<br>※-A と同時に指定すると、後に指定されたオプションを省略します。 |
-| `-P CODE` | `--newline CODE` | 可変長・CSV ファイルの改行コードを指定します。<br>※指定可能な値：`\n`, `\r`, `\r\n`<br>※未指定の場合、デフォルトは `\n` を使用します。 |
-| `-D CHAR` | `--delimiter CHAR` | CSV ファイルのデリミタを指定します。<br>※タブ文字には `\t` を使用<br>※未指定の場合、カンマを使用します。 |
-| `-W SIZE` | `--memory SIZE` | 使用できる最大メモリサイズを指定します。<br>※形式：数値[MB\|KB]（例：`64MB`, `1024KB`）<br>※未指定の場合、全メモリを使用してソートします<br>※常に最小値 16MB で制限されます。 |
-| `-T DIR` | `--temp-dir DIR` | ソート用一時ファイルのディレクトリを指定します。<br>※未指定の場合、システムの一時ディレクトリを使用します。<br>※一時ファイル名は `hsort_プロセスid.tmp` となります。<br>※ソート後、一時ファイルを自動的に削除します。 |
-| `-O FILE` | `--output FILE` | 出力先ファイルのパスを指定します。<br>※出力先ファイルを入力ファイルと同じファイルの指定もできます。<br>※未指定の場合、標準出力に出力します |
-| `-E FILE` | `--error-file FILE` | エラーファイルのパスを指定します。<br>※未指定の場合、不正レコードがスキップされ、出力されない。 |
-| `-M` | `--merge` | ソート済みファイルをマージします |
-| `入力ファイル...` | - | 入力ファイルのパスを指定します。<br>※複数指定可、更に全て引数の最後に指定しなければならない。<br>※未指定の場合、標準入力から読み込みます |
+| `-h` | `--help` | Show help |
+| `-V` | `--version` | Show version and license info |
+| `-C` | `--csv` | Input is CSV |
+| `-H` | `--header` | Treat first CSV row as header |
+| `-S` | `--stable` | Stable sort |
+| `-U` | `--unique` | Unique output (first record per key) |
+| `-L BYTES` | `--record-length BYTES` | Fixed-length records; length **1–640KB** per file layout |
+| `-K KEY_SPEC` | `--key` | Sort key (repeatable). **Fixed / variable-length:** `start[,len][n][a\|d]` — start: 0-based byte offset; len: optional key length; `n`: numeric sort (default ASCII); `a`: ascending (default), `d`: descending. **CSV:** `col[n][a\|d]` — column number from 1 |
+| `-A` | `--all-asc` | Sort whole record ascending. With `-K`, `-K` wins; with `-R`, the later flag wins |
+| `-R` | `--all-desc` | Sort whole record descending. With `-K`, `-K` wins; with `-A`, the later flag wins |
+| `-P CODE` | `--newline CODE` | Newline for variable-length / CSV: `\n`, `\r`, `\r\n` (default `\n`) |
+| `-D CHAR` | `--delimiter CHAR` | CSV delimiter; use `\t` for tab (default comma) |
+| `-W SIZE` | `--memory SIZE` | Max memory, e.g. `64MB`, `1024KB`; if omitted, engine sizes from input; minimum **16MB** enforced. **Not** the free-tier **total input file size** cap (see [Free tier](#free-tier-total-input-file-size) below) |
+| `-T DIR` | `--temp-dir DIR` | Temp directory for external sort (default: system temp); files named like `hsort_<pid>.tmp`, removed after sort |
+| `-O FILE` | `--output FILE` | Output path (default stdout); may match an input path |
+| `-E FILE` | `--error-file FILE` | Invalid records → this file; if omitted, bad records are skipped silently |
+| `-M` | `--merge` | Merge already-sorted files |
+| *(paths)* | — | Input files: multiple allowed, **must be last**; if omitted, read stdin |
 
-**注意**: 
-- オプションは大文字、小文字を区別します（例：`-C` と `-c` は異なります）
-- 短オプションと長オプションは同じ意味です（例：`-C` と `--csv` は同じ）
+**Notes**
 
-### 使用例
+- Short and long options are equivalent (e.g. `-C` / `--csv`).
+- Options are case-sensitive (`-C` ≠ `-c`).
 
-#### I、CSVファイルのソート
+**License-related CLI**
 
-**① デリミタ（カンマ）、最大メモリサイズ 100MB、全レコード昇順、標準入力、標準出力**
+```bash
+hsort --license YOUR_KEY      # activate
+hsort --check-license         # status
+```
+
+### Examples
+
+#### I. CSV sorting
+
+**① Comma delimiter, max memory 100MB, whole-record ascending, stdin → stdout**
+
 ```bash
 hsort -C -W100M < in.csv
 ```
 
-**② 改行コード（Lf）、デリミタ（Tab）、複数キー、昇順、降順、出力ファイル、入力ファイル**
+**② LF newline, tab delimiter, multi-key (col1 asc, col3 desc), output + inputs**
+
 ```bash
 hsort -C -P'\n' -D'\t' -K1a -K3d -O out.csv in1.csv in2.csv
 ```
-※エラーファイルが未指定のため、列数が3列不足のレコードがエラーレコードとして出力されない
 
-**③ ユニーク出力、全レコード降順、一時ファイル、出力ファイル、エラーファイル、入力ファイル**
+*No `-E`: rows with fewer than 3 columns are not written to an error file.*
+
+**③ Unique, whole-record descending, temp dir, output, error file, input**
+
 ```bash
 hsort -C -U -R -T /tmp -O out.csv -E err.csv in.csv
 ```
-※エラーレコードがエラーファイル err.csv に出力される
 
-**④ 安定ソート、1列目 ASCII 昇順、3列目数字で降順**
+*Bad records go to `err.csv`.*
+
+**④ Stable sort; column 1 ASCII ascending, column 3 numeric descending**
+
 ```bash
 hsort -C -S -K1 -K3nd -O out.csv in.csv
 ```
 
-#### II、固定長ファイルのソート
+#### II. Fixed-length sorting
 
-**① レコード長 64、最大メモリサイズ 100MB、全レコード昇順、標準入力、標準出力**
+**① Record length 64, max memory 100MB, whole-record ascending, stdin → stdout**
+
 ```bash
 hsort -L64 -W100M < in.dat
 ```
 
-**② レコード長 64、複数キー、昇順、数字で降順、出力ファイル、入力ファイル**
+**② Record length 64, multi-key (asc + numeric desc), output + inputs**
+
 ```bash
 hsort -L64 -K0,5a -K3,8nd -O out.dat in1.dat in2.dat
 ```
-※エラーファイルが未指定のため、列数が3列不足のレコードがエラーレコードとして出力されない
 
-**③ レコード長 64、ユニーク出力、全レコード降順、一時ファイル、出力ファイル、エラーファイル、入力ファイル**
+*No `-E`: rows shorter than required keys are not written to an error file.*
+
+**③ Record length 64, unique, whole-record descending, temp dir, output, error file, input**
+
 ```bash
 hsort -L64 -U -R -T /tmp -O out.dat -E err.dat in.dat
 ```
-※エラーレコードがエラーファイル err.dat に出力される
 
-**④ レコード長 64、安定ソート、複数キー、降順、昇順、出力ファイル、入力ファイル**
+**④ Record length 64, stable, multi-key (desc + asc), output + input**
+
 ```bash
 hsort -L64 -S -K1,3d -K6,9a -O out.dat in.dat
 ```
 
-#### III、可変長ファイルのソート
+#### III. Variable-length sorting
 
-**① 改行コード（CrLf）、最大メモリサイズ 100MB、全レコード昇順、標準入力、標準出力**
+**① CRLF newline, max memory 100MB, whole-record ascending, stdin → stdout**
+
 ```bash
 hsort -P'\r\n' -W100M < in.dat
 ```
 
-**② 複数キー、昇順、数字で降順、出力ファイル、入力ファイル**
+**② Multi-key (asc + numeric desc), output + inputs**
+
 ```bash
 hsort -K5,8a -K0,3nd -O out.dat in1.dat in2.dat
 ```
-※エラーファイルが未指定のため、列数が3列不足のレコードがエラーレコードとして出力されない
 
-**③ ユニーク出力、全レコード降順、一時ファイル、出力ファイル、エラーファイル、入力ファイル**
+**③ Unique, whole-record descending, temp dir, output, error file, input**
+
 ```bash
 hsort -U -R -T /tmp -O out.dat -E err.dat in.dat
 ```
-※エラーレコードがエラーファイル err.dat に出力される
 
-**④ 安定ソート、複数キー、昇順、降順、出力ファイル、入力ファイル**
+**④ Stable, multi-key (asc + desc), output + input**
+
 ```bash
 hsort -S -K1,3 -K5,9d -O out.dat in.dat
 ```
 
-## 注意事項
+## Notes
 
-1. 入力ファイルのフォーマットが指定されないと、可変長として処理します。
-2. オプションは大文字、小文字を区別します（例：`-C` と `-c` は異なります）。
-3. 短オプションと長オプションは同じ意味です（例：`-C` と `--csv` は同じ）。
-4. 可変長、CSV ファイルのデフォルトな改行コードは `\n` (LF) となります。
-5. 入力ファイルは最後にならなくてはいけませんが、他の各パラメタ順序は任意です。
-6. Python拡張ライブラリとして、`pip install hsort` でインストール後、`hsort` コマンドが利用可能になります。
-7. プログラム内から使用する場合は `import hsort` して `hsort.hsort(args)` 関数を呼び出します。
+1. If format is unspecified, input is treated as variable-length.
+2. Options are case-sensitive (e.g. `-C` ≠ `-c`).
+3. Short and long options mean the same (e.g. `-C` / `--csv`).
+4. Default newline for variable-length / CSV is `\n` (LF).
+5. Input file paths must appear **last**; other options can be in any order.
+6. After `pip install hsort`, the `hsort` command is available.
+7. In code: `import hsort` and call `hsort.hsort(args)`.
 
-## Python API の使用方法
+## Language (UI)
 
-HSORTは、プログラム内でPythonライブラリとしても使用できます。
+CLI messages default to **English**. Japanese is used when detected from, in order:
 
-### 基本的なインポート
+1. **`HSORT_LANG`** (explicit)
+2. **Windows**: system UI language
+3. **Unix/Linux**: `locale.getdefaultlocale()`
+4. **`LANG`**, **`LANGUAGE`**, **`LC_ALL`**, **`LC_MESSAGES`**
+
+### Forcing the language (`HSORT_LANG`)
+
+**Windows PowerShell**
+
+```powershell
+$env:HSORT_LANG="en"
+hsort --help
+
+$env:HSORT_LANG="ja"
+hsort --help
+
+# Persist for user account:
+[System.Environment]::SetEnvironmentVariable("HSORT_LANG", "en", "User")
+```
+
+**Linux / macOS (Bash)**
+
+```bash
+export HSORT_LANG=en
+hsort --help
+
+export HSORT_LANG=ja
+hsort --help
+```
+
+**Windows CMD**
+
+```cmd
+set HSORT_LANG=en
+hsort --help
+
+set HSORT_LANG=ja
+hsort --help
+```
+
+Accepted values: `ja` / `japanese` / `jp` (Japanese), `en` / `english` (English). On PowerShell, use `$env:HSORT_LANG`, not `set`.
+
+### Debug locale detection
+
+```powershell
+$env:HSORT_DEBUG_LANG="1"
+hsort --help
+```
+
+```bash
+export HSORT_DEBUG_LANG=1
+hsort --help
+```
+
+Details print to stderr.
+
+## Python API
+
+HSORT can be used as a library.
+
+### Import
 
 ```python
 import hsort
 ```
 
-### API関数
+### Function
 
-メイン関数は `hsort.hsort(args)` で、コマンドラインインターフェースと同様の引数リストを受け取ります。
+`hsort.hsort(args)` takes the same argv-style list as the CLI.
 
-**関数シグネチャ:**
 ```python
 hsort.hsort(args: List[str]) -> int
 ```
 
-**パラメータ:**
-- `args`: コマンドライン引数のリスト（CLIと同じ形式）
+- **args**: argument list (same as CLI)
+- **Return**: exit code (`0` = success)
 
-**戻り値:**
-- 終了コード: 成功時は `0`、エラー時は非ゼロ
+### Examples
 
-### Python API の使用例
-
-#### 例1: CSVファイルのソート
+**Example 1 — Sort CSV by column 1**
 
 ```python
 import hsort
 
-# 第1列でCSVファイルをソート
 ret = hsort.hsort([
-    "-C",      # CSV形式
-    "-H",      # ヘッダー付き
-    "-K1",     # 第1列でソート
+    "-C",
+    "-H",
+    "-K1",
     "-O", "output.csv",
-    "input.csv"
+    "input.csv",
 ])
 
 if ret == 0:
-    print("ソート成功！")
+    print("Sort succeeded")
 else:
-    print(f"エラーが発生しました。終了コード: {ret}")
+    print(f"Error, exit code: {ret}")
 ```
 
-#### 例2: CSVマルチキーソート
+**Example 2 — CSV multi-key (col1 asc, col3 desc)**
 
 ```python
 import hsort
 
-# 第1列昇順、第3列降順でソート
-ret = hsort.hsort([
-    "-C",
-    "-H",
-    "-K1",     # 第1列昇順
-    "-K3d",    # 第3列降順
-    "-O", "output.csv",
-    "input.csv"
-])
-```
-
-#### 例3: CSV数値ソート
-
-```python
-import hsort
-
-# 第1列を数値としてソート
-ret = hsort.hsort([
-    "-C",
-    "-H",
-    "-K1n",    # 第1列を数値ソート
-    "-O", "output.csv",
-    "input.csv"
-])
-```
-
-#### 例4: 固定長ファイルのソート
-
-```python
-import hsort
-
-# 固定長ファイルのソート（レコード長64バイト）
-ret = hsort.hsort([
-    "-L64",    # レコード長64バイト
-    "-K0,20",  # ソートキー：位置0、長さ20
-    "-O", "output.dat",
-    "input.dat"
-])
-```
-
-#### 例5: 可変長ファイルのソート
-
-```python
-import hsort
-
-# 可変長ファイルのソート
-ret = hsort.hsort([
-    "-K0,10",  # ソートキー：位置0、長さ10
-    "-O", "output.dat",
-    "input.dat"
-])
-```
-
-#### 例6: ユニーク出力
-
-```python
-import hsort
-
-# 重複レコードを削除
 ret = hsort.hsort([
     "-C",
     "-H",
     "-K1",
-    "-U",      # ユニーク出力
+    "-K3d",
     "-O", "output.csv",
-    "input.csv"
+    "input.csv",
 ])
 ```
 
-#### 例7: 安定ソート
+**Example 3 — CSV numeric sort on column 1**
 
 ```python
 import hsort
 
-# 安定ソート（同じキー値のレコードの入力順序を保持）
+ret = hsort.hsort([
+    "-C",
+    "-H",
+    "-K1n",
+    "-O", "output.csv",
+    "input.csv",
+])
+```
+
+**Example 4 — Fixed-length (64-byte records)**
+
+```python
+import hsort
+
+ret = hsort.hsort([
+    "-L64",
+    "-K0,20",
+    "-O", "output.dat",
+    "input.dat",
+])
+```
+
+**Example 5 — Variable-length**
+
+```python
+import hsort
+
+ret = hsort.hsort([
+    "-K0,10",
+    "-O", "output.dat",
+    "input.dat",
+])
+```
+
+**Example 6 — Unique output**
+
+```python
+import hsort
+
 ret = hsort.hsort([
     "-C",
     "-H",
     "-K1",
-    "-S",      # 安定ソート
+    "-U",
     "-O", "output.csv",
-    "input.csv"
+    "input.csv",
 ])
 ```
 
-#### 例8: エラーハンドリング
+**Example 7 — Stable sort**
+
+```python
+import hsort
+
+ret = hsort.hsort([
+    "-C",
+    "-H",
+    "-K1",
+    "-S",
+    "-O", "output.csv",
+    "input.csv",
+])
+```
+
+**Example 8 — Error file**
 
 ```python
 import hsort
@@ -358,43 +412,41 @@ input_file = "input.csv"
 output_file = "output.csv"
 error_file = "errors.csv"
 
-# エラーファイル出力付きでソート
 ret = hsort.hsort([
     "-C",
     "-H",
     "-K1",
     "-K2",
-    "-E", error_file,  # エラーレコードファイル
+    "-E", error_file,
     "-O", output_file,
-    input_file
+    input_file,
 ])
 
 if ret == 0:
     if os.path.exists(output_file):
-        print(f"✓ ソート成功！出力: {output_file}")
+        print(f"OK: {output_file}")
     if os.path.exists(error_file) and os.path.getsize(error_file) > 0:
-        print(f"⚠ 一部のレコードにエラーがありました。確認: {error_file}")
+        print(f"Some rows in: {error_file}")
 else:
-    print(f"✗ ソート失敗。終了コード: {ret}")
+    print(f"Failed, exit code: {ret}")
 ```
 
-#### 例9: メモリ管理
+**Example 9 — Memory limit**
 
 ```python
 import hsort
 
-# メモリ使用量を64MBに制限
 ret = hsort.hsort([
     "-C",
     "-H",
     "-K1",
-    "-W64MB",  # メモリ制限
+    "-W64MB",
     "-O", "output.csv",
-    "input.csv"
+    "input.csv",
 ])
 ```
 
-#### 例10: プログラムによるファイル処理
+**Example 10 — Batch CSV files**
 
 ```python
 import hsort
@@ -402,96 +454,86 @@ import os
 from pathlib import Path
 
 def sort_csv_files(input_dir, output_dir):
-    """ディレクトリ内のすべてのCSVファイルをソート"""
     input_path = Path(input_dir)
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
-    
+
     for csv_file in input_path.glob("*.csv"):
         output_file = output_path / f"sorted_{csv_file.name}"
-        
         ret = hsort.hsort([
             "-C",
             "-H",
             "-K1",
             "-O", str(output_file),
-            str(csv_file)
+            str(csv_file),
         ])
-        
         if ret == 0:
-            print(f"✓ ソート完了: {csv_file.name}")
+            print(f"OK: {csv_file.name}")
         else:
-            print(f"✗ 失敗: {csv_file.name} (終了コード: {ret})")
+            print(f"Fail: {csv_file.name} (exit {ret})")
 
-# 使用例
 sort_csv_files("data/input", "data/output")
 ```
 
-### APIリファレンス
+### API reference
 
-**関数:** `hsort.hsort(args)`
+**`hsort.hsort(args)`** — run a sort/merge; same rules as the CLI.
 
-hsortソート操作を実行します。
+- **args** (`List[str]`): argv-style list.
+- **Returns** (`int`): exit code.
+- **Raises**
+  - **`ImportError`**: extension not installed
+  - **`RuntimeError`**: free-tier total input size exceeded (same condition as CLI)
 
-- **パラメータ:**
-  - `args` (List[str]): コマンドライン引数のリスト。形式はCLI使用法と同一です。
-  
-- **戻り値:**
-  - `int`: 終了コード（成功時は0、エラー時は非ゼロ）
+`args` must follow the same rules as the command line.
 
-- **例外:**
-  - `ImportError`: hsortモジュールが正しくインストールされていない場合
+## Requirements
 
-**注意:** 引数の形式はコマンドラインインターフェースと同じです。すべてのオプションとファイルパスは、リスト内の文字列として提供する必要があります。
+- Python **3.6+**  
+- Windows, Linux, or macOS  
+- Suggest **≥ 16 MB** available RAM (tune with `-W`)  
 
-## 要件
+## Pricing & License
 
-- Python 3.6 以上
-- サポートされているオペレーティングシステム: Windows, Linux, macOS
-- メモリ: 推奨は少なくとも16MBの利用可能メモリ（`-W`オプションで調整可能）
+HSORT offers a free tier and paid licenses:
 
-## ライセンス
+### 🟢 Free version
+- Up to **100MB total input size**
+- No feature restrictions (size limit only)
 
-## ライセンス
+### 🔵 Paid license
+- Unlimited input size
+- Full performance
+- Commercial use
 
-本プロジェクトは MIT License の下で公開されています。
+👉 Activate license:
+
+```bash
+hsort --license YOUR_KEY
+```
+
+## Free tier: total input file size
+
+When **no valid license** is activated, the **combined size of regular input files** passed on the command line or in `hsort.hsort([...])` must not exceed **100 MiB** (**100 × 1024 × 1024** bytes). The check is shared by **CLI and API**.
+
+- Defined in source as **`FREE_VERSION_MAX_TOTAL_INPUT_BYTES`** in **`hsort/api.py`**.  
+- This is **independent** of **`-W` / `--memory`** (e.g. `-W100M` limits sort memory, not this license input cap).  
+- Activating a **paid license** removes this total input-size limit (subject to your license agreement).  
+
+## License
 
 Copyright (c) 2015–2026 株式会社GPO
 
-### MIT License
+This project is **not open source**. The software is **proprietary**; see the **`LICENSE`** file for full terms.
 
-```
-MIT License
+- **Not open source** — No general right to source, redistribution, or modification except as allowed by law or a written agreement.  
+- **Free tier** — May include limits (e.g. total input size as above). Does not grant full commercial rights.  
+- **Paid license** — Unlocks full features per your agreement with the publisher.  
 
-Copyright (c) 2026 株式会社GPO
+Licensing contact: **soft@gpo-i.com**
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## Links
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 連絡方式
-
-不具合を発見したら、下記メール宛に連絡していただいたら、幸いです。
-
-**soft@gpo-i.com**
-
-## リンク
-
-- ホームページ: https://github.com/xuhui-hou/hsort
-- リポジトリ: https://github.com/xuhui-hou/hsort
-- イシュー: https://github.com/xuhui-hou/hsort/issues
+- Homepage: https://github.com/xuhui-hou/hsort  
+- Repository: https://github.com/xuhui-hou/hsort  
+- Issues: https://github.com/xuhui-hou/hsort/issues  
