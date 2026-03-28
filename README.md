@@ -521,8 +521,6 @@ hsort --license YOUR_KEY
 
 When **no valid license** is activated, the **combined size of regular input files** passed on the command line or in `hsort.hsort([...])` must not exceed **100 MiB** (**100 × 1024 × 1024** bytes). The check is shared by **CLI and API**.
 
-- Defined in source as **`FREE_VERSION_MAX_TOTAL_INPUT_BYTES`** in **`hsort/api.py`**.  
-- This is **independent** of **`-W` / `--memory`** (e.g. `-W100M` limits sort memory, not this license input cap).  
 - Activating a **paid license** removes this total input-size limit (subject to your license agreement).  
 
 ## License
