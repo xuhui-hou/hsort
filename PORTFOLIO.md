@@ -14,7 +14,6 @@
 
 - 数千万件規模のデータ処理・最適化
 - AWS上でのDWH・AI基盤構築
-- Elasticsearch + MongoDB の検索設計
 - C + Pythonによる高性能ライブラリ開発
 - フルスタック開発（設計〜運用）
 
