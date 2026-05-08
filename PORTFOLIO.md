@@ -79,7 +79,7 @@ AWS / Docker
 
 - 応用情報技術者
 - AWS SAA
-- Python / Ruby / Java / C
+- Python / Ruby / Perl / Java / C
 - Oracle Master
 - 日本語能力試験 N1
 
