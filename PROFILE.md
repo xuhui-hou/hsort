@@ -25,7 +25,7 @@
 - CSV / 固定長 / 可変長データ対応
 - メモリ最適化による高速処理
 
-👉 https://github.com/xuhui-hou/hsort
+👉 [https://github.com/xuhui-hou/hsort](https://github.com/xuhui-hou/hsort/blob/main/README.ja.md)
 
 ---
 
