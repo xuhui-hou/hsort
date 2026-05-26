@@ -6,7 +6,7 @@
 特に「大規模データ処理」「システム設計」「パフォーマンス最適化」を強みとしています。
 
 - 所在地：日本
-- 技術：React / Next.js / Python / Go / AWS / C
+- 技術：React / Next.js / Python / Go / AWS / C / Java / Perl
 
 ---
 
