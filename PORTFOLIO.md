@@ -21,14 +21,17 @@
 
 ## 🏢 実務経験
 
+### ■ 【Python/JavaScript】営業支援ツール開発案件（現在）
+AI（cursor、claudecode）により、フルスタック開発
+
 ### ■ AI基盤構築（2019）
-メーカー内研究開発用AI基盤を設計・構築
+第一人称で、メーカー内研究開発用AI基盤を設計・構築
 
 ### ■ ビッグデータDWH（2018 / AWS）
-AWS上でデータ分析基盤を設計・開発
+第一人称で、AWS上でデータ分析基盤を設計・開発
 
 ### ■ AEOデータ自動交換システム（2015）
-官公庁と欧州間のデータ連携システムを設計・開発
+第一人称で、官公庁と欧州間のデータ連携システムを設計・開発
 
 ### ■ 技術領域
 - TCP/IP / 組み込み / カーネル / ドライバ
@@ -37,7 +40,7 @@ AWS上でデータ分析基盤を設計・開発
 
 ---
 
-## 🚀 プロジェクト
+## 🚀 プロジェクト（個人）
 
 ### ⚡ HSORT（高速ソートライブラリ）
 
@@ -68,7 +71,7 @@ React / Next.js / TypeScript
 Python / Go
 
 ### DB
-MongoDB / MySQL / Elasticsearch
+MySQL / MongoDB
 
 ### Infra
 AWS / Docker
@@ -85,6 +88,3 @@ AWS / Docker
 
 ---
 
-## 📫 Contact
-
-- GitHub: https://github.com/xuhui-hou
