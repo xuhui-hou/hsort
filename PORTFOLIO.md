@@ -48,7 +48,7 @@ AI（cursor、claudecode）により、フルスタック開発
 - 数千万件以上のデータ処理対応
 - マルチキー安定ソート
 
-🔗 https://github.com/xuhui-hou/hsort
+🔗 https://github.com/xuhui-hou/hsort/blob/main/README.ja.md
 
 ---
 
